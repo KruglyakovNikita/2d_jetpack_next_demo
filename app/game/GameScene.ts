@@ -4,8 +4,6 @@ class GameScene extends Phaser.Scene {
   cursor!: Phaser.Types.Input.Keyboard.CursorKeys;
   score!: number;
   scoreText!: Phaser.GameObjects.Text;
-  maxHeigth!: number;
-  lastPlatformY!: number;
   lastPlatformX!: number;
 
   constructor() {
@@ -49,18 +47,18 @@ class GameScene extends Phaser.Scene {
       immovable: true,
     });
 
-    const initialLasers = 10;
-    let laserX = 800;
+    const initialLasers = 1;
+    let laserX = 500;
 
     for (let i = 0; i < initialLasers; i++) {
       const x = laserX;
-      const y = Phaser.Math.Between(50, 350);
+      const y = Phaser.Math.Between(60, 340);
 
       this.createLaser(x, y);
       laserX += Phaser.Math.Between(300, 500);
     }
 
-    this.lastPlatformX = laserX + Phaser.Math.Between(300, 500);
+    this.lastPlatformX = laserX;
     this.physics.add.collider(
       this.player,
       this.lasers,
@@ -71,6 +69,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    // ---Player
     if (this.cursor.up.isDown || this.cursor.space.isDown) {
       this.player.setVelocityY(-180);
     } else {
@@ -81,6 +80,13 @@ class GameScene extends Phaser.Scene {
     if (currentScore !== this.score) {
       this.score = currentScore;
       this.scoreText.setText("Score: " + this.score);
+    }
+
+    // ---Blocks
+    console.log(this.player.x + "-" + this.lastPlatformX);
+
+    if (this.player.x > this.lastPlatformX) {
+      this.addLaser(this.player.x);
     }
   }
 
@@ -102,6 +108,18 @@ class GameScene extends Phaser.Scene {
   playerTouchLaser(player: any, laser: any) {
     console.log("Тронул");
     this.scene.restart();
+  }
+
+  addLaser(playerX: number) {
+    const laserGap = Phaser.Math.Between(400, 650);
+    const minY = 60;
+    const maxY = 340;
+
+    const x = playerX + laserGap;
+    const y = Phaser.Math.Between(minY, maxY);
+
+    this.createLaser(x, y);
+    this.lastPlatformX += laserGap;
   }
 }
 
