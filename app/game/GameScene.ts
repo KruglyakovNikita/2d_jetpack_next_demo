@@ -37,7 +37,7 @@ class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(-Infinity, 0, Infinity, 400);
     this.cameras.main.startFollow(this.player);
 
-    this.physics.world.setBounds(-Infinity, 0, Infinity, 400);
+    this.physics.world.setBounds(-Infinity, 0, this.player.x + 500, 400);
     this.player.setVelocityX(200);
 
     // ---Blocks
@@ -102,7 +102,7 @@ class GameScene extends Phaser.Scene {
     laser.body!.checkCollision.left = true;
     laser.body!.checkCollision.right = true;
     laser.setImmovable(true);
-    laser.setBounce(0.5);
+    laser.setBounce(0);
   }
 
   playerTouchLaser(player: any, laser: any) {

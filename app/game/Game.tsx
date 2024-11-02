@@ -17,10 +17,11 @@ export const Game = () => {
       physics: {
         default: "arcade",
         arcade: {
-          gravity: { x: 0, y: 200 },
+          gravity: { x: 0, y: -15 },
           debug: true,
         },
       },
+      fps: { target: 30, forceSetTimeOut: true },
       scene: GameScene,
     };
 
